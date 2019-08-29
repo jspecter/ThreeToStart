@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <script src="https://cdn.bootcss.com/three.js/r83/three.js"></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="container" style="width:600px;height:600px"></div>
+        <script type="text/javascript">
+            const container = document.querySelector('#container');
+
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            container.appendChild(renderer.domElement);
+
+            const scene = new THREE.Scene();
+
+            const camera = new THREE.PerspectiveCamera(
+                55,
+                container.offsetWidth / container.offsetWidth
+            );
+            camera.position.set(0, 0, 3.33);
+
+            scene.add(camera);
+
+            const geometry = new THREE.PlaneGeometry(1, 1);
+            const mesh = new THREE.Mesh(
+                geometry,
+                new THREE.MeshBasicMaterial()
+            );
+            scene.add(mesh);
+
+            renderer.render(scene, camera);
+        </script>
+    </body>
+</html>

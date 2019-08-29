@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/107/three.js"></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="container" style="width:600px;height:600px"></div>
+        <script>
+            const container = document.querySelector('.container');
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            container.appendChild(renderer.domElement);
+
+            const earthGroup = new THREE.Group();
+
+            const scene = new THREE.Scene();
+
+            const camera = new THREE.PerspectiveCamera(
+                45,
+                container.offsetWidth / container.offsetHeight,
+                1,
+                4000
+            );
+            camera.position.set(0, 0, 3.333);
+            //点光源
+            const light = new THREE.PointLight(0xffffff, 2, 100);
+            light.position.set(-10, 0, 20);
+            scene.add(light);
+
+            const surfaceMap = new THREE.TextureLoader().load(
+                './image/earth_surface_2048.jpg'
+            );
+            const normalMap = new THREE.TextureLoader().load(
+                './image/earth_normal_2048.jpg'
+            );
+            const specularMap = new THREE.TextureLoader().load(
+                './image/earth_specular_2048.jpg'
+            );
+
+            const geometry = new THREE.SphereBufferGeometry(1, 32, 32);
+            const shaderMaterial = new THREE.MeshPhongMaterial({
+                map: surfaceMap,
+                normalMap,
+                specularMap
+            });
+
+            const sphere = new THREE.Mesh(geometry, shaderMaterial);
+            sphere.rotation.z = 0.42;
+            earthGroup.add(sphere);
+            scene.add(earthGroup);
+            renderer.render(scene, camera);
+
+            function step() {
+                sphere.rotation.y += 0.01;
+                renderer.render(scene, camera);
+                requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        </script>
+    </body>
+</html>
