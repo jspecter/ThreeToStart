@@ -9,16 +9,16 @@ const starsGeometry = new THREE.Geometry();
 
 for (let i = 0; i < VERTICES; i++) {
     const vector = new THREE.Vector3(
-        Math.random() * 2 - 1 * MINDISTANCE,
-        Math.random() * 2 - 1 * MINDISTANCE,
-        Math.random() * 2 - 1 * MINDISTANCE
+        (Math.random() * 2 - 1) * MINDISTANCE,
+        (Math.random() * 2 - 1) * MINDISTANCE,
+        (Math.random() * 2 - 1) * MINDISTANCE
     );
 
     if (vector.length() < MINDISTANCE) {
         vector.setLength(MINDISTANCE);
     }
 
-    starsGeometry.vertices.push(new THREE.Vector3(vector));
+    starsGeometry.vertices.push(vector);
 }
 
 let starMaterials = [];

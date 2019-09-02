@@ -1,4 +1,4 @@
-import { earthGroup, sphere, cloudMesh } from './earthMoon.js';
+import { earthGroup, earthMesh, cloudMesh, moonMesh } from './earthMoon.js';
 import starGroup from './star.js';
 
 const container = document.body;
@@ -16,19 +16,21 @@ const camera = new THREE.PerspectiveCamera(
     1,
     4000
 );
-camera.position.set(0, 0, 3.333);
+camera.position.set(0, 0, 10.333);
 //点光源
 const light = new THREE.PointLight(0xffffff, 2, 100);
 light.position.set(-10, 0, 20);
 scene.add(light);
 scene.add(earthGroup);
-console.log(starGroup);
 scene.add(starGroup);
 
 function step() {
-    sphere.rotation.y += 0.01;
+    earthMesh.rotation.y += 0.01;
     cloudMesh.rotation.y += 0.008;
-    earthGroup.rotation.y += 0.01;
+    moonMesh.rotation.y += 0.02;
+    earthGroup.rotation.y -= 0.01;
+    starGroup.rotation.x += 0.0005;
+    starGroup.rotation.y += 0.0005;
     renderer.render(scene, camera);
     requestAnimationFrame(step);
 }
