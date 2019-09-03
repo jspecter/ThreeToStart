@@ -20,14 +20,12 @@ const geometry = new THREE.SphereBufferGeometry(1, 32, 32);
 const cloudGeometry = new THREE.SphereBufferGeometry(1.005, 32, 32);
 const moonGeometry = new THREE.SphereBufferGeometry((1 / 3.2) * 1.2, 32, 32);
 const lineGeometry = new THREE.Geometry();
-for (let i = 0; i < NSegments; i++) {
-    const radius = 356000 / 6371 - 1;
-    const x = radius * Math.cos((i / 120) * 2 * Math.PI);
-    const z = radius * Math.sin((i / 120) * 2 * Math.PI);
+for (let i = 0; i < NSegments + 1; i++) {
+    const radius = 7.5;
+    const x = radius * Math.cos((i / NSegments) * 2 * Math.PI);
+    const z = radius * Math.sin((i / NSegments) * 2 * Math.PI);
     lineGeometry.vertices.push(new THREE.Vector3(x, 0, z));
 }
-
-console.log(lineGeometry);
 
 // 创建材质
 const shaderMaterial = new THREE.MeshPhongMaterial({
@@ -42,8 +40,10 @@ const cloudMaterial = new THREE.MeshLambertMaterial({
 const moonMaterial = new THREE.MeshPhongMaterial({
     map: moonMap
 });
-const lineMaterial = new THREE.LineBasicMaterial({
-    color: 0xaaaaaa
+const lineMaterial = new THREE.LineDashedMaterial({
+    color: 0xeeeeee,
+    gapSize: 0.05,
+    dashSize: 0.1
 });
 
 // 将几何体和材质绑定到网格
@@ -51,6 +51,7 @@ const earthMesh = new THREE.Mesh(geometry, shaderMaterial);
 const cloudMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
 const moonMesh = new THREE.Mesh(moonGeometry, moonMaterial);
 const lineMesh = new THREE.Line(lineGeometry, lineMaterial);
+lineMesh.computeLineDistances();
 
 const distance = 356400 / 6371;
 moonMesh.position.set(Math.sqrt(distance / 2), 0, -Math.sqrt(distance / 2));
@@ -59,7 +60,7 @@ earthMesh.rotation.z = 0.42;
 cloudMesh.rotation.z = 0.42;
 moonMesh.rotation.y = Math.PI;
 //earthGroup.rotation.z = 0.1;
-//earthGroup.rotation.x = 0.089;
+earthGroup.rotation.x = 0.3;
 
 earthGroup.add(earthMesh);
 earthGroup.add(cloudMesh);
